@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.adi.learning.android.data.R;
 import com.adi.learning.android.data.model.DataItem;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class DataItemAdapter extends RecyclerView.Adapter<DataItemAdapter.ViewHo
     private List<DataItem> mItems;
     private Context mContext;
 
-    public DataItemAdapter(Context context, List<DataItem> items) {
+    DataItemAdapter(Context context, List<DataItem> items) {
         this.mContext = context;
         this.mItems = items;
     }
@@ -30,13 +30,12 @@ public class DataItemAdapter extends RecyclerView.Adapter<DataItemAdapter.ViewHo
     public DataItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View itemView = inflater.inflate(R.layout.list_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(itemView);
-        return viewHolder;
+        return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(DataItemAdapter.ViewHolder holder, int position) {
-        DataItem item = mItems.get(position);
+        final DataItem item = mItems.get(position);
 
         try {
             holder.tvName.setText(item.getItemName());
@@ -47,6 +46,21 @@ public class DataItemAdapter extends RecyclerView.Adapter<DataItemAdapter.ViewHo
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "You clicked " + item.getItemName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(mContext, "You long clicked " + item.getItemName(), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -54,15 +68,18 @@ public class DataItemAdapter extends RecyclerView.Adapter<DataItemAdapter.ViewHo
         return mItems.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvName;
-        public ImageView imageView;
-        public ViewHolder(View itemView) {
+        View mView;
+        TextView tvName;
+        ImageView imageView;
+
+        ViewHolder(View itemView) {
             super(itemView);
+            mView = itemView;
 
-            tvName = (TextView) itemView.findViewById(R.id.itemNameText);
-            imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            tvName = itemView.findViewById(R.id.itemNameText);
+            imageView = itemView.findViewById(R.id.imageView);
         }
     }
 }
