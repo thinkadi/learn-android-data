@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.adi.learning.android.data.model.DataItem;
 import com.adi.learning.android.data.sample.SampleDataProvider;
@@ -53,5 +54,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, SIGNIN_REQUEST);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == SIGNIN_REQUEST) {
+            String email = data.getStringExtra(SigninActivity.EMAIL_KEY);
+            Toast.makeText(this, "You signed in as " + email, Toast.LENGTH_SHORT).show();
+        }
     }
 }
