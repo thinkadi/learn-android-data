@@ -2,9 +2,7 @@ package com.adi.learning.android.data;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.support.v7.widget.RecyclerView;
 
 import com.adi.learning.android.data.model.DataItem;
 import com.adi.learning.android.data.sample.SampleDataProvider;
@@ -31,18 +29,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        for (DataItem item : dataItemList) {
-////            tvOut.append(item.getItemName() + "\n");
-//            itemNames.add(item.getItemName());
-//        }
-//        Collections.sort(itemNames);
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//                this, android.R.layout.simple_list_item_1, itemNames);
-
         DataItemAdapter adapter = new DataItemAdapter(this, dataItemList);
 
-        ListView listView = findViewById(android.R.id.list);
-        listView.setAdapter(adapter);
+        RecyclerView recyclerView = findViewById(R.id.rvItems);
+        recyclerView.setAdapter(adapter);
     }
 }
